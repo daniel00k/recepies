@@ -1,7 +1,11 @@
 package me.danielaguilar.recepies.ui;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.danielaguilar.recepies.R;
 import me.danielaguilar.recepies.adapters.RecipeAdapter;
+import me.danielaguilar.recepies.idle_resource.SimpleIdlingResource;
 import me.danielaguilar.recepies.models.Recipe;
 import me.danielaguilar.recepies.network.RecipeCaller;
 import retrofit2.Call;
@@ -41,6 +46,8 @@ public class MainActivity extends BaseActivity implements RecipeAdapter.OnRecipe
 
     private ArrayList<Recipe> recipes;
 
+    private CountingIdlingResource countingIdlingResource = new CountingIdlingResource(MainActivity.class.getName());
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +59,7 @@ public class MainActivity extends BaseActivity implements RecipeAdapter.OnRecipe
             recipes = savedInstanceState.getParcelableArrayList(RECIPE_LIST);
             setAdapter();
         }else{
+            countingIdlingResource.increment();
             callApi();
         }
     }
@@ -91,13 +99,19 @@ public class MainActivity extends BaseActivity implements RecipeAdapter.OnRecipe
 
     @Override
     public void onSuccess(Call<List<Recipe>> call, Response<List<Recipe>> response) {
+        countingIdlingResource.decrement();
         animationView.setVisibility(View.GONE);
         recipes = (ArrayList<Recipe>)response.body();
         setAdapter();
+
     }
 
     @Override
     public void onFailure(Call<List<Recipe>> call, Throwable t) {
 
+    }
+
+    public IdlingResource getIdlingResource() {
+        return countingIdlingResource;
     }
 }

@@ -6,4 +6,7 @@
     <string name="pause">Pause</string>
     <string name="play">play</string>
     <string name="restart">restart</string>
+    <string name="appwidget_text">My Recipes App</string>
+    <string name="add_widget">Add widget</string>
+    <string name="activity_main_recycler_tag">ActivityMain.Recycler</string>
 </resources>

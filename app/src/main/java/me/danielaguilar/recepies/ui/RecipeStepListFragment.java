@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +36,8 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.OnSt
 
     private boolean forTablet;
 
+    private LinearLayoutManager layoutManager;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,11 +57,16 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.OnSt
     private void setAdapter(){
         StepAdapter stepAdapter= new StepAdapter(recipe.getSteps(), this, getActivity());
         stepsList.setAdapter(stepAdapter);
-        stepsList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        layoutManager = new LinearLayoutManager(getActivity());
+        stepsList.setLayoutManager(layoutManager);
     }
 
     @Override
-    public void onSelect(Step step) {
+    public void onSelect(Step step, int oldPosition) {
+        View view = layoutManager.findViewByPosition(oldPosition);
+        if(view != null){
+            view.setSelected(false);
+        }
         Bundle bundle = new Bundle();
         bundle.putParcelable(Step.CLASS_NAME, step);
         if (forTablet && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){

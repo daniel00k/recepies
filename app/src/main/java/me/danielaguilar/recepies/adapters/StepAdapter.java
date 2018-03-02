@@ -2,6 +2,7 @@ package me.danielaguilar.recepies.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,12 @@ import me.danielaguilar.recepies.models.Step;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder>{
     public interface OnStepSelected{
-        void onSelect(Step step);
+        void onSelect(Step step, int oldPosition);
     }
     private OnStepSelected listener;
     private List<Step> steps;
     private Context mContext;
+    private int selectedIndex=-1;
 
     public StepAdapter(final List<Step> steps, final OnStepSelected listener, final Context context){
         this.listener   = listener;
@@ -54,6 +56,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         private TextView shortDescription;
         private ImageView thumbnail;
 
+
+
         public StepViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -73,7 +77,11 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
         @Override
         public void onClick(View view) {
-            listener.onSelect(steps.get(getAdapterPosition()));
+            final int oldPosition =  selectedIndex;
+            selectedIndex = getAdapterPosition();
+            view.setSelected(true);
+
+            listener.onSelect(steps.get(getAdapterPosition()), oldPosition);
         }
     }
 }
