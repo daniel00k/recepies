@@ -2,11 +2,6 @@
     <string name="app_name">recepies</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="pause">Pause</string>
-    <string name="play">play</string>
-    <string name="restart">restart</string>
     <string name="appwidget_text">My Recipes App</string>
-    <string name="add_widget">Add widget</string>
     <string name="activity_main_recycler_tag">ActivityMain.Recycler</string>
 </resources>

@@ -35,6 +35,8 @@ public class RecipeActivityInstrumentedTest {
     RecipeActivity activity;
     private Recipe recipe = RecipesDummyFactory.getRecipe();
 
+    private boolean forTablet;
+
     @Rule
     public ActivityTestRule<RecipeActivity> activityTestRule = new ActivityTestRule<RecipeActivity>(RecipeActivity.class){
         @Override
@@ -48,30 +50,38 @@ public class RecipeActivityInstrumentedTest {
     };
 
     @Before
-    public void setScreenOrientation(){
-        activity = activityTestRule.getActivity();
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    public void getScreenLayout(){
+        activity    = activityTestRule.getActivity();
+        forTablet   = activity.findViewById(R.id.fragment_container) != null;
     }
 
     @Test
     public void onSwipeLeft_ShowsAListOfIngredients(){
+        if(forTablet){
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         onView(withId(R.id.pager)).perform(swipeLeft());
         onView(withId(R.id.ingredients_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-
     }
 
     @Test
     public void onStepsListClick_ShowsAFragmentWithTheVideo(){
-        onView(withId(R.id.pager)).perform(swipeRight());
-        onView(withId(R.id.steps_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.fragment_container)).check(matches(isDisplayed()));
+        if(forTablet){
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            onView(withId(R.id.pager)).perform(swipeRight());
+            onView(withId(R.id.steps_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+            onView(withId(R.id.fragment_container)).check(matches(isDisplayed()));
+        }
     }
 
     @Test
     public void onStepsListClick_ShowsAnActivityWithTheDescription(){
+
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         onView(withId(R.id.pager)).perform(swipeRight());
         onView(withId(R.id.steps_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.description)).check(matches(withText(recipe.getSteps().get(0).getDescription())));
+        //if the new activity starts in landscape mode, this will fail
+        onView(withText(recipe.getSteps().get(0).getDescription())).check(matches(isDisplayed()));
+
     }
 }

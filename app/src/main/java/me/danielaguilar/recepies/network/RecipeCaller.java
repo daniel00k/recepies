@@ -1,11 +1,9 @@
 package me.danielaguilar.recepies.network;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 
 import java.util.List;
 
-import me.danielaguilar.recepies.idle_resource.SimpleIdlingResource;
 import me.danielaguilar.recepies.models.Recipe;
 import retrofit2.Call;
 import retrofit2.Callback;

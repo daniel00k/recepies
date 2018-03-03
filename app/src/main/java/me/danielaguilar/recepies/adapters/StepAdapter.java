@@ -2,7 +2,6 @@ package me.danielaguilar.recepies.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import me.danielaguilar.recepies.R;
-import me.danielaguilar.recepies.models.Ingredient;
 import me.danielaguilar.recepies.models.Step;
 
 /**

@@ -3,14 +3,12 @@ package me.danielaguilar.recepies;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +16,7 @@ import org.junit.runner.RunWith;
 import me.danielaguilar.recepies.dummies.StepsDummyFactory;
 import me.danielaguilar.recepies.models.Step;
 import me.danielaguilar.recepies.ui.RecipeStepDescriptionActivity;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;

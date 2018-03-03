@@ -3,10 +3,7 @@ package me.danielaguilar.recepies.network;
 import android.content.Context;
 import android.widget.Toast;
 
-import java.util.List;
-
 import me.danielaguilar.recepies.config.Constants;
-import me.danielaguilar.recepies.models.Recipe;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;

@@ -1,21 +1,16 @@
 package me.danielaguilar.recepies.ui;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.idling.CountingIdlingResource;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.danielaguilar.recepies.R;
 import me.danielaguilar.recepies.adapters.RecipeAdapter;
-import me.danielaguilar.recepies.idle_resource.SimpleIdlingResource;
 import me.danielaguilar.recepies.models.Recipe;
 import me.danielaguilar.recepies.network.RecipeCaller;
 import retrofit2.Call;
@@ -54,7 +48,7 @@ public class MainActivity extends BaseActivity implements RecipeAdapter.OnRecipe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        if(savedInstanceState != null){
+        if(savedInstanceState != null && savedInstanceState.getParcelableArrayList(RECIPE_LIST)!=null){
             animationView.setVisibility(View.GONE);
             recipes = savedInstanceState.getParcelableArrayList(RECIPE_LIST);
             setAdapter();
