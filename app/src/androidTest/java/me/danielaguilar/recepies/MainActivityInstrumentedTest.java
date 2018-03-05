@@ -1,7 +1,6 @@
 package me.danielaguilar.recepies;
 
 import android.content.pm.ActivityInfo;
-import android.graphics.drawable.GradientDrawable;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.contrib.RecyclerViewActions;

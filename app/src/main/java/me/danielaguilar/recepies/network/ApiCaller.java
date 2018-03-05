@@ -23,7 +23,7 @@ public class ApiCaller {
     private Retrofit retrofit;
     private Context context;
 
-    public ApiCaller(){};
+    public ApiCaller(){}
 
     public ApiCaller(Context context){
         this.context    = context;

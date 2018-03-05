@@ -37,6 +37,8 @@ public class RecipeStepDescriptionActivity extends BaseActivity implements Playe
 
     private PlayerDialogFragment newFragment;
 
+    public static final String SECONDS = "seconds";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class RecipeStepDescriptionActivity extends BaseActivity implements Playe
         mediaPlayerHelper = MediaPlayerHelper.initialize(this, mPlayerView);
 
         if(savedInstanceState != null){
-            playerPosition = savedInstanceState.getLong("seconds");
+            playerPosition = savedInstanceState.getLong(SECONDS);
         }
         initializePlayer();
     }
@@ -116,9 +118,9 @@ public class RecipeStepDescriptionActivity extends BaseActivity implements Playe
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if(mediaPlayerHelper.getExoPlayer()!=null){
-            outState.putLong("seconds", mediaPlayerHelper.getPlayerPosition());
+            outState.putLong(SECONDS, mediaPlayerHelper.getPlayerPosition());
         }else{
-            outState.putLong("seconds", playerPosition);
+            outState.putLong(SECONDS, playerPosition);
         }
         super.onSaveInstanceState(outState);
     }

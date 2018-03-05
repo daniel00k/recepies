@@ -105,7 +105,7 @@ public class PlayerDialogFragment extends DialogFragment{
     private void setStep(){
         if(step == null){
             step = getArguments().getParcelable(Step.CLASS_NAME);
-            playerPosition = getArguments().getLong("seconds");
+            playerPosition = getArguments().getLong(RecipeStepDescriptionActivity.SECONDS);
         }
     }
 
