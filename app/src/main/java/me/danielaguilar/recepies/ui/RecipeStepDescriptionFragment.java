@@ -57,7 +57,7 @@ public class RecipeStepDescriptionFragment extends Fragment{
                 // Initialize the Media Session.
                 mediaPlayerHelper.initializeMediaSession();
                 // Initialize the player.
-                mediaPlayerHelper.initializePlayer(Uri.parse(step.getVideoURL()));
+                mediaPlayerHelper.initializePlayer(Uri.parse(step.getVideoURL()), 0);
             }else{
                 mPlayerView.setVisibility(View.INVISIBLE);
             }

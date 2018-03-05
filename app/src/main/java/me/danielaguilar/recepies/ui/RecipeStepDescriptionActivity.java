@@ -21,11 +21,11 @@ import me.danielaguilar.recepies.models.Step;
  * Created by danielaguilar on 03-02-18.
  */
 
-public class RecipeStepDescriptionActivity extends BaseActivity{
+public class RecipeStepDescriptionActivity extends BaseActivity implements PlayerDialogFragment.OnPlayerStateChanged{
 
     private Step step;
 
-    private long playerPosition = -1l;
+    private long playerPosition = 0l;
 
     @Nullable @BindView(R.id.description)
     TextView description;
@@ -34,6 +34,7 @@ public class RecipeStepDescriptionActivity extends BaseActivity{
     SimpleExoPlayerView mPlayerView;
 
     private MediaPlayerHelper mediaPlayerHelper;
+
     private PlayerDialogFragment newFragment;
 
 
@@ -47,14 +48,19 @@ public class RecipeStepDescriptionActivity extends BaseActivity{
         ButterKnife.bind(this);
         mediaPlayerHelper = MediaPlayerHelper.initialize(this, mPlayerView);
 
+        if(savedInstanceState != null){
+            playerPosition = savedInstanceState.getLong("seconds");
+        }
         initializePlayer();
     }
 
     private void showDialog(){
         FragmentManager fragmentManager = getSupportFragmentManager();
         newFragment = new PlayerDialogFragment();
+        newFragment.setListener(this);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Step.CLASS_NAME, step);
+        bundle.putLong("seconds", playerPosition);
         newFragment.setArguments(bundle);
 
         newFragment.show(fragmentManager, "dialog");
@@ -79,7 +85,7 @@ public class RecipeStepDescriptionActivity extends BaseActivity{
                     // Initialize the Media Session.
                     mediaPlayerHelper.initializeMediaSession();
                     // Initialize the player.
-                    mediaPlayerHelper.initializePlayer(Uri.parse(step.getVideoURL()));
+                    mediaPlayerHelper.initializePlayer(Uri.parse(step.getVideoURL()), playerPosition);
                 } else {
                     mPlayerView.setVisibility(View.INVISIBLE);
                 }
@@ -109,6 +115,16 @@ public class RecipeStepDescriptionActivity extends BaseActivity{
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        if(mediaPlayerHelper.getExoPlayer()!=null){
+            outState.putLong("seconds", mediaPlayerHelper.getPlayerPosition());
+        }else{
+            outState.putLong("seconds", playerPosition);
+        }
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onPlayerStateChangedListener(long seconds) {
+        playerPosition = seconds;
     }
 }

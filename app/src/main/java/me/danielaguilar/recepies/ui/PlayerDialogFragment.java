@@ -31,6 +31,14 @@ public class PlayerDialogFragment extends DialogFragment{
 
     private MediaPlayerHelper mediaPlayerHelper;
 
+    private long playerPosition = 0l;
+
+    public interface OnPlayerStateChanged{
+        void onPlayerStateChangedListener(long seconds);
+    }
+
+    private OnPlayerStateChanged listener;
+
     /** The system calls this to get the DialogFragment's layout, regardless
      of whether it's being displayed as a dialog or an embedded fragment. */
     @Override
@@ -88,7 +96,7 @@ public class PlayerDialogFragment extends DialogFragment{
             // Initialize the Media Session.
             mediaPlayerHelper.initializeMediaSession();
             // Initialize the player.
-            mediaPlayerHelper.initializePlayer(Uri.parse(step.getVideoURL()));
+            mediaPlayerHelper.initializePlayer(Uri.parse(step.getVideoURL()), playerPosition);
         } else {
             mPlayerView.setVisibility(View.INVISIBLE);
         }
@@ -97,6 +105,7 @@ public class PlayerDialogFragment extends DialogFragment{
     private void setStep(){
         if(step == null){
             step = getArguments().getParcelable(Step.CLASS_NAME);
+            playerPosition = getArguments().getLong("seconds");
         }
     }
 
@@ -107,9 +116,21 @@ public class PlayerDialogFragment extends DialogFragment{
     }
 
     @Override
+    public void onPause() {
+        if(listener != null){
+            listener.onPlayerStateChangedListener(mediaPlayerHelper.getPlayerPosition());
+        }
+        super.onPause();
+    }
+
+    @Override
     public void onDismiss(DialogInterface dialog) {
         mediaPlayerHelper.releasePlayer();
         super.onDismiss(dialog);
+    }
+
+    public void setListener(OnPlayerStateChanged listener) {
+        this.listener = listener;
     }
 
 }

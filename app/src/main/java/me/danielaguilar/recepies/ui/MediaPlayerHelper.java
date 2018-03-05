@@ -80,7 +80,7 @@ public class MediaPlayerHelper implements ExoPlayer.EventListener{
      * Initialize ExoPlayer.
      * @param mediaUri The URI of the sample to play.
      */
-    public void initializePlayer(Uri mediaUri) {
+    public void initializePlayer(Uri mediaUri, final long position) {
         if (mExoPlayer == null) {
             // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
@@ -97,6 +97,7 @@ public class MediaPlayerHelper implements ExoPlayer.EventListener{
                     context, userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.seekTo(position);
         }
     }
 
@@ -127,9 +128,16 @@ public class MediaPlayerHelper implements ExoPlayer.EventListener{
         this.mPlayerView = playerView;
     }
 
-
     public void setPlayerPosition(final long position){
         mExoPlayer.seekTo(position);
+    }
+
+    public long getPlayerPosition(){
+        return mExoPlayer.getCurrentPosition();
+    }
+
+    public SimpleExoPlayer getExoPlayer() {
+        return mExoPlayer;
     }
 
     @Override
@@ -155,7 +163,9 @@ public class MediaPlayerHelper implements ExoPlayer.EventListener{
         } else if((playbackState == ExoPlayer.STATE_READY)){
             mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
                     mExoPlayer.getCurrentPosition(), 1f);
+
         }
+
         mMediaSession.setPlaybackState(mStateBuilder.build());
     }
 

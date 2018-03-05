@@ -133,4 +133,5 @@ public class RecipeActivity extends BaseActivity {
         outState.putBoolean(FOR_TABLET, forTablet);
         super.onSaveInstanceState(outState);
     }
+
 }
