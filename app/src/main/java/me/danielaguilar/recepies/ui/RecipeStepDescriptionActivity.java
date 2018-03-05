@@ -21,7 +21,7 @@ import me.danielaguilar.recepies.models.Step;
  * Created by danielaguilar on 03-02-18.
  */
 
-public class RecipeStepDescriptionActivity extends BaseActivity implements MediaPlayerHelper.OnPlayerStopListener{
+public class RecipeStepDescriptionActivity extends BaseActivity{
 
     private Step step;
 
@@ -45,7 +45,7 @@ public class RecipeStepDescriptionActivity extends BaseActivity implements Media
         setContentView(R.layout.activity_recipe_step_description);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
-        mediaPlayerHelper = MediaPlayerHelper.initialize(this, mPlayerView, this);
+        mediaPlayerHelper = MediaPlayerHelper.initialize(this, mPlayerView);
 
         initializePlayer();
     }
@@ -55,7 +55,6 @@ public class RecipeStepDescriptionActivity extends BaseActivity implements Media
         newFragment = new PlayerDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(Step.CLASS_NAME, step);
-        bundle.putLong("playerPosition", playerPosition);
         newFragment.setArguments(bundle);
 
         newFragment.show(fragmentManager, "dialog");
@@ -72,7 +71,7 @@ public class RecipeStepDescriptionActivity extends BaseActivity implements Media
     }
 
     private void initializePlayer(){
-        if(step!= null){
+        if(step != null){
             if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {//Portrait
                 description.setText(step.getDescription());
 
@@ -81,9 +80,6 @@ public class RecipeStepDescriptionActivity extends BaseActivity implements Media
                     mediaPlayerHelper.initializeMediaSession();
                     // Initialize the player.
                     mediaPlayerHelper.initializePlayer(Uri.parse(step.getVideoURL()));
-                    if(playerPosition != -1l){
-                        mediaPlayerHelper.setPlayerPosition(playerPosition);
-                    }
                 } else {
                     mPlayerView.setVisibility(View.INVISIBLE);
                 }
@@ -112,7 +108,7 @@ public class RecipeStepDescriptionActivity extends BaseActivity implements Media
     }
 
     @Override
-    public void OnPlayerStop(long positionMs) {
-        playerPosition = positionMs;
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }

@@ -80,7 +80,7 @@ public class RecipeActivityInstrumentedTest {
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         onView(withId(R.id.pager)).perform(swipeRight());
         onView(withId(R.id.steps_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        //if the new activity starts in landscape mode, this will fail
+        //if the new activity starts in landscape mode, this will fail?
         onView(withText(recipe.getSteps().get(0).getDescription())).check(matches(isDisplayed()));
 
     }

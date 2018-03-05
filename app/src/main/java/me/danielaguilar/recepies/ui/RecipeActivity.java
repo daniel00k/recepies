@@ -1,5 +1,6 @@
 package me.danielaguilar.recepies.ui;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -36,6 +37,8 @@ public class RecipeActivity extends BaseActivity {
 
     public static final String  FOR_TABLET = "ForTablet";
 
+    private boolean forTablet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +53,22 @@ public class RecipeActivity extends BaseActivity {
         mPagerAdapter = new RecipeActivity.ScreenSlidePagerAdapter(getSupportFragmentManager());
         pager.setAdapter(mPagerAdapter);
         tabLayout.setupWithViewPager(pager);
+
+        if(savedInstanceState != null){
+            forTablet = savedInstanceState.getBoolean(FOR_TABLET);
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(getResources().getConfiguration().orientation==Configuration.ORIENTATION_PORTRAIT && forTablet){
+            RecipeStepDescriptionFragment fragment = (RecipeStepDescriptionFragment) getSupportFragmentManager().findFragmentByTag(RecipeStepDescriptionFragment.class.getName());
+            if(fragment != null){
+                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+            }
+        }
     }
 
     @Override
@@ -79,7 +98,8 @@ public class RecipeActivity extends BaseActivity {
         public Fragment getItem(int position) {
             Bundle bundle = new Bundle();
             bundle.putParcelable(Recipe.CLASS_NAME, recipe);
-            bundle.putBoolean(FOR_TABLET, fragmentContainer!=null);
+            forTablet   =   fragmentContainer != null;
+            bundle.putBoolean(FOR_TABLET, forTablet);
             if(position == 1){
                 RecipeIngredientListFragment fragment = new RecipeIngredientListFragment();
                 fragment.setArguments(bundle);
@@ -106,5 +126,11 @@ public class RecipeActivity extends BaseActivity {
                 return "Steps";
             }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(FOR_TABLET, forTablet);
+        super.onSaveInstanceState(outState);
     }
 }

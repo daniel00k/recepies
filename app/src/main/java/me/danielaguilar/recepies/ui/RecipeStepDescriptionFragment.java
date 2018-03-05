@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 import me.danielaguilar.recepies.R;
 import me.danielaguilar.recepies.models.Step;
 
-public class RecipeStepDescriptionFragment extends Fragment implements MediaPlayerHelper.OnPlayerStopListener{
+public class RecipeStepDescriptionFragment extends Fragment{
 
     private Step step;
 
@@ -43,7 +43,7 @@ public class RecipeStepDescriptionFragment extends Fragment implements MediaPlay
         View view = inflater.inflate(R.layout.fragment_recipe_step_description, container, false);
 
         ButterKnife.bind(this, view);
-        mediaPlayerHelper = MediaPlayerHelper.initialize(getActivity(), mPlayerView, this);
+        mediaPlayerHelper = MediaPlayerHelper.initialize(getActivity(), mPlayerView);
         // Inflate the layout for this fragment
         return view;
     }
@@ -72,8 +72,4 @@ public class RecipeStepDescriptionFragment extends Fragment implements MediaPlay
         super.onDestroy();
     }
 
-    @Override
-    public void OnPlayerStop(long positionMs) {
-
-    }
 }

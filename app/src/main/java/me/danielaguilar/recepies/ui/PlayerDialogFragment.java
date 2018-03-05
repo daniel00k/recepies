@@ -23,15 +23,13 @@ import me.danielaguilar.recepies.models.Step;
  * Created by danielaguilar on 21-02-18.
  */
 
-public class PlayerDialogFragment extends DialogFragment implements MediaPlayerHelper.OnPlayerStopListener{
+public class PlayerDialogFragment extends DialogFragment{
 
     private Step step;
 
     private SimpleExoPlayerView mPlayerView;
 
     private MediaPlayerHelper mediaPlayerHelper;
-
-    private long positionMs =   -1l;
 
     /** The system calls this to get the DialogFragment's layout, regardless
      of whether it's being displayed as a dialog or an embedded fragment. */
@@ -85,15 +83,12 @@ public class PlayerDialogFragment extends DialogFragment implements MediaPlayerH
     }
 
     private void initPlayer(){
-        mediaPlayerHelper = MediaPlayerHelper.initialize(getActivity(), mPlayerView, this);
+        mediaPlayerHelper = MediaPlayerHelper.initialize(getActivity(), mPlayerView);
         if (step.getVideoURL() != null && !step.getVideoURL().equals("")) {
             // Initialize the Media Session.
             mediaPlayerHelper.initializeMediaSession();
             // Initialize the player.
             mediaPlayerHelper.initializePlayer(Uri.parse(step.getVideoURL()));
-            if(positionMs != -1l){
-                mediaPlayerHelper.setPlayerPosition(positionMs);
-            }
         } else {
             mPlayerView.setVisibility(View.INVISIBLE);
         }
@@ -102,7 +97,6 @@ public class PlayerDialogFragment extends DialogFragment implements MediaPlayerH
     private void setStep(){
         if(step == null){
             step = getArguments().getParcelable(Step.CLASS_NAME);
-            positionMs = getArguments().getLong("playerPosition");
         }
     }
 
@@ -118,8 +112,4 @@ public class PlayerDialogFragment extends DialogFragment implements MediaPlayerH
         super.onDismiss(dialog);
     }
 
-    @Override
-    public void OnPlayerStop(long positionMs) {
-
-    }
 }

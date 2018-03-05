@@ -29,9 +29,6 @@ import com.google.android.exoplayer2.util.Util;
 
 public class MediaPlayerHelper implements ExoPlayer.EventListener{
 
-    public interface OnPlayerStopListener{
-        void OnPlayerStop(final long positionMs);
-    }
     //Player
     private SimpleExoPlayer mExoPlayer;
     private static MediaSessionCompat mMediaSession;
@@ -39,12 +36,10 @@ public class MediaPlayerHelper implements ExoPlayer.EventListener{
     private static final String TAG = MediaPlayerHelper.class.getSimpleName();
     private Context context;
     private SimpleExoPlayerView mPlayerView;
-    private OnPlayerStopListener listener;
 
-    public static MediaPlayerHelper initialize(final Context context, final SimpleExoPlayerView mPlayerView, OnPlayerStopListener listener){
+    public static MediaPlayerHelper initialize(final Context context, final SimpleExoPlayerView mPlayerView){
         MediaPlayerHelper player = new MediaPlayerHelper();
         player.setContext(context);
-        player.setListener(listener);
         player.setPlayerView(mPlayerView);
         return player;
     }
@@ -132,9 +127,6 @@ public class MediaPlayerHelper implements ExoPlayer.EventListener{
         this.mPlayerView = playerView;
     }
 
-    public void setListener(OnPlayerStopListener listener) {
-        this.listener = listener;
-    }
 
     public void setPlayerPosition(final long position){
         mExoPlayer.seekTo(position);
@@ -164,7 +156,6 @@ public class MediaPlayerHelper implements ExoPlayer.EventListener{
             mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
                     mExoPlayer.getCurrentPosition(), 1f);
         }
-        listener.OnPlayerStop(mExoPlayer.getCurrentPosition());
         mMediaSession.setPlaybackState(mStateBuilder.build());
     }
 

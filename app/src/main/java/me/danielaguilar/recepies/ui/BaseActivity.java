@@ -23,12 +23,13 @@ public class BaseActivity extends AppCompatActivity {
             Log.d(TAG, "adding fragment"+klass.getName());
             fragment = Fragment.instantiate(getBaseContext(), klass.getName());
             fragment.setArguments(bundle);
-            ft.add(resourceId, fragment);
+            ft.add(resourceId, fragment, klass.getName());
         }else {
             Log.d(TAG, "replacing fragment"+klass.getName());
             fragment = Fragment.instantiate(getBaseContext(), klass.getName());
+
             fragment.setArguments(bundle);
-            ft.replace(resourceId, fragment);
+            ft.replace(resourceId, fragment, klass.getName());
         }
         //ft.addToBackStack(fragment.getClass().getName());
         ft.commit();
