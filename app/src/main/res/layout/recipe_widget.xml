@@ -1,25 +1,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:background="@color/post_it_dark_color"
     android:padding="@dimen/widget_margin">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/widget_image"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/cooking"/>
     <TextView
-        android:id="@+id/appwidget_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/margin_xs"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textColor="#ffffff"
-        android:textSize="12sp"
-        android:textStyle="bold|italic" />
+        android:text="@string/app_name"
+        android:gravity="center_horizontal"
+        android:paddingTop="@dimen/margin_m"
+        android:paddingBottom="@dimen/margin_m"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:id="@+id/appwidget_text_view"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/dark_white"
+        android:id="@+id/appwidget_list" />
 
 </LinearLayout>

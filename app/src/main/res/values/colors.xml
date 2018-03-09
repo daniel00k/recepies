@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
     <color name="dark_white">#e7e7e7</color>
+    <color name="black">#000000</color>
+    <color name="post_it_color">#FFFFA5</color>
+    <color name="post_it_dark_color">#FFFFF59D</color>
 </resources>
