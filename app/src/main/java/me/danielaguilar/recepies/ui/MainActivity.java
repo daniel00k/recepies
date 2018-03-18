@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity implements RecipeAdapter.OnRecipe
 
     private void setAdapter(){
 
-        RecipeAdapter adapter = new RecipeAdapter(recipes, this);
+        RecipeAdapter adapter = new RecipeAdapter(recipes, this, this);
         if(recipesList != null){
             recipesList.setVisibility(View.VISIBLE);
             recipesList.setLayoutManager(new LinearLayoutManager(this));

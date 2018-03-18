@@ -1,10 +1,14 @@
 package me.danielaguilar.recepies.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -21,10 +25,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     }
     private OnRecipeSelected listener;
     private List<Recipe> recipes;
+    private Context mContext;
 
-    public RecipeAdapter(final List<Recipe> recipes, final OnRecipeSelected listener){
+    public RecipeAdapter(final List<Recipe> recipes, final OnRecipeSelected listener, final Context context){
         this.listener   = listener;
         this.recipes    = recipes;
+        this.mContext    = context;
     }
 
     @Override
@@ -45,15 +51,22 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView recipeName;
+        private ImageView recipeImage;
 
         public RecipeViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             recipeName  =   itemView.findViewById(R.id.recipe_name);
+            recipeImage =   itemView.findViewById(R.id.recipe_image);
         }
 
         public void bind(final Recipe recipe){
             recipeName.setText(recipe.getName());
+            if(recipe.getImageURL() != null && !recipe.getImageURL().equals("")){
+                Picasso.with(mContext).load(recipe.getImageURL()).into(recipeImage);
+            }else{
+                recipeImage.setVisibility(View.GONE);
+            }
         }
 
         @Override
