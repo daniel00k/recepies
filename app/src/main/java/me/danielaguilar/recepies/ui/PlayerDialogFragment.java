@@ -111,7 +111,6 @@ public class PlayerDialogFragment extends DialogFragment{
 
     @Override
     public void onDestroy() {
-        mediaPlayerHelper.releasePlayer();
         super.onDestroy();
     }
 
@@ -121,6 +120,12 @@ public class PlayerDialogFragment extends DialogFragment{
             listener.onPlayerStateChangedListener(mediaPlayerHelper.getPlayerPosition());
         }
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        mediaPlayerHelper.releasePlayer();
+        super.onStop();
     }
 
     @Override

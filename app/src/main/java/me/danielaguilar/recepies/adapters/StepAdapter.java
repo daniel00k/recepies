@@ -21,7 +21,7 @@ import me.danielaguilar.recepies.models.Step;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder>{
     public interface OnStepSelected{
-        void onSelect(Step step, int oldPosition);
+        void onSelect(Step step, int oldPosition, int newPosition);
     }
     private OnStepSelected listener;
     private List<Step> steps;
@@ -44,6 +44,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     public void onBindViewHolder(StepViewHolder holder, int position) {
         holder.bind(steps.get(position));
     }
+
 
     @Override
     public int getItemCount() {
@@ -77,9 +78,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         public void onClick(View view) {
             final int oldPosition =  selectedIndex;
             selectedIndex = getAdapterPosition();
-            view.setSelected(true);
-
-            listener.onSelect(steps.get(getAdapterPosition()), oldPosition);
+            listener.onSelect(steps.get(getAdapterPosition()), oldPosition, selectedIndex);
         }
     }
 }

@@ -35,7 +35,7 @@ public class RecipeActivity extends BaseActivity {
 
     private Recipe recipe;
 
-    public static final String  FOR_TABLET = "ForTablet";
+    public static final String FOR_TABLET = "ForTablet";
 
     private boolean forTablet;
 
@@ -63,12 +63,12 @@ public class RecipeActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(getResources().getConfiguration().orientation==Configuration.ORIENTATION_PORTRAIT && forTablet){
+        /*if(forTablet){
             RecipeStepDescriptionFragment fragment = (RecipeStepDescriptionFragment) getSupportFragmentManager().findFragmentByTag(RecipeStepDescriptionFragment.class.getName());
             if(fragment != null){
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
             }
-        }
+        }*/
     }
 
     @Override

@@ -100,8 +100,13 @@ public class RecipeStepDescriptionActivity extends BaseActivity implements Playe
 
     @Override
     protected void onDestroy() {
-        mediaPlayerHelper.releasePlayer();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        mediaPlayerHelper.releasePlayer();
+        super.onStop();
     }
 
     @Override
