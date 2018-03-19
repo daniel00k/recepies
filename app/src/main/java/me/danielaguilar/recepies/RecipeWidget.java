@@ -3,8 +3,10 @@ package me.danielaguilar.recepies;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -22,12 +24,23 @@ import me.danielaguilar.recepies.ui.RecipeActivity;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static android.content.Context.MODE_PRIVATE;
+import static me.danielaguilar.recepies.ui.MainActivity.MY_PREFS_NAME;
+import static me.danielaguilar.recepies.ui.MainActivity.SELECTED_RECIPE;
+
 /**
  * Implementation of App Widget functionality.
  */
 public class RecipeWidget extends AppWidgetProvider {
     public static final String KEY_ITEM     = "me.danielaguilar.recepies.KEY_ITEM";
     public static final String BUNDLE_KEY   = "bundle";
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        AppWidgetManager appWidgetManager =AppWidgetManager.getInstance(context);
+        onUpdate(context, appWidgetManager, appWidgetManager.getAppWidgetIds(new ComponentName(context, RecipeWidget.class)));
+        super.onReceive(context, intent);
+    }
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -53,9 +66,15 @@ public class RecipeWidget extends AppWidgetProvider {
             @Override
             public void onSuccess(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                 ArrayList<Recipe> recipes = (ArrayList<Recipe>) response.body();
-                Random randomGenerator = new Random();
-                int randomInt = randomGenerator.nextInt(recipes.size());
-                setAdapter(recipes.get(randomInt), context, appWidgetManager, appWidgetId);
+                SharedPreferences prefs = context.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+                int id = prefs.getInt(SELECTED_RECIPE, 0); //0 is the default value.
+                int index = 0;
+                for (int j=0; j<recipes.size(); j++){
+                    if(recipes.get(j).getId() == id){
+                        index = j;
+                    }
+                }
+                setAdapter(recipes.get(index), context, appWidgetManager, appWidgetId);
             }
 
             @Override

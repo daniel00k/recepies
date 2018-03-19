@@ -1,6 +1,8 @@
 package me.danielaguilar.recepies.ui;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.test.espresso.IdlingResource;
@@ -18,6 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.danielaguilar.recepies.R;
+import me.danielaguilar.recepies.RecipeWidget;
 import me.danielaguilar.recepies.adapters.RecipeAdapter;
 import me.danielaguilar.recepies.models.Recipe;
 import me.danielaguilar.recepies.network.RecipeCaller;
@@ -26,6 +29,7 @@ import retrofit2.Response;
 
 public class MainActivity extends BaseActivity implements RecipeAdapter.OnRecipeSelected, RecipeCaller.OnFinishCall<List<Recipe>>{
 
+    public static final String SELECTED_RECIPE = "selectedRecipe";
     private static int SPAN_COUNT = 3;
     private static String RECIPE_LIST = "recipeList";
 
@@ -41,6 +45,7 @@ public class MainActivity extends BaseActivity implements RecipeAdapter.OnRecipe
     private ArrayList<Recipe> recipes;
 
     private CountingIdlingResource countingIdlingResource = new CountingIdlingResource(MainActivity.class.getName());
+    public static final String MY_PREFS_NAME = "me.danielaguilar.recepies.preferences";
 
 
     @Override
@@ -88,6 +93,14 @@ public class MainActivity extends BaseActivity implements RecipeAdapter.OnRecipe
     public void onSelect(Recipe recipe) {
         Intent intent = new Intent(MainActivity.this, RecipeActivity.class);
         intent.putExtra(Recipe.CLASS_NAME, recipe);
+        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putInt(SELECTED_RECIPE, recipe.getId());
+        editor.apply();
+
+        Intent intentUpdate = new Intent(this, RecipeWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+
+        sendBroadcast(intentUpdate);
         startActivity(intent);
     }
 
